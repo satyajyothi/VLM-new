@@ -54,7 +54,7 @@ echo "Installing vlm chaincode to peer0.manf.vlm.com..."
 
 # install chaincode
 # Install code on bank peer
-docker exec -e "CORE_PEER_LOCALMSPID=manfMSP" -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manf.vlm.com/users/Admin@ manf.vlm.com/msp" -e "CORE_PEER_ADDRESS=peer0. manf.vlm.com:7051" cli peer chaincode install -n vlmcc -v 1.0 -p github.com/vlm/go -l golang
+docker exec -e "CORE_PEER_LOCALMSPID=manfMSP" -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manf.vlm.com/users/Admin@manf.vlm.com/msp" -e "CORE_PEER_ADDRESS=peer0.manf.vlm.com:7051" cli peer chaincode install -n vlmcc -v 1.0 -p github.com/vlm/go -l golang
 
 echo "Installed vlm chaincode to peer0.manf.vlm.com "
 

@@ -125,7 +125,7 @@ services:
       - CORE_PEER_ID=peer0.manf.vlm.com
       - CORE_LOGGING_PEER=debug
       - CORE_CHAINCODE_LOGGING_LEVEL=DEBUG
-      - CORE_PEER_LOCALMSPID=BankMSP
+      - CORE_PEER_LOCALMSPID=manfMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
       - CORE_PEER_ADDRESS=peer0.manf.vlm.com:7051
       # # the following setting starts chaincode containers on the same
@@ -177,7 +177,7 @@ services:
       - CORE_PEER_ID=peer0.rta.vlm.com
       - CORE_LOGGING_PEER=debug
       - CORE_CHAINCODE_LOGGING_LEVEL=DEBUG
-      - CORE_PEER_LOCALMSPID=RtaMSP
+      - CORE_PEER_LOCALMSPID=rtaMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
       - CORE_PEER_ADDRESS=peer0.rta.vlm.com:7051
       # # the following setting starts chaincode containers on the same
@@ -336,7 +336,7 @@ services:
       - CORE_PEER_ID=peer0.scr.vlm.com
       - CORE_LOGGING_PEER=debug
       - CORE_CHAINCODE_LOGGING_LEVEL=DEBUG
-      - CORE_PEER_LOCALMSPID=BankMSP
+      - CORE_PEER_LOCALMSPID=bankMSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
       - CORE_PEER_ADDRESS=peer0.bank.vlm.com:7051
       # # the following setting starts chaincode containers on the same

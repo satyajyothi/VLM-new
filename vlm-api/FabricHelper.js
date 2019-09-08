@@ -17,7 +17,7 @@ var os = require('os');
 // var fabric_client = new Fabric_Client();
 
 // // setup the fabric network
-// var channel = fabric_client.newChannel('tfbcchannel');
+// var channel = fabric_client.newChannel('vlmchannel');
 // var order = fabric_client.newOrderer('grpc://localhost:7050')
 // channel.addOrderer(order);
 // //add buyer peer
@@ -31,14 +31,14 @@ console.log('Store path:'+store_path);
 var tx_id = null;
 
 
-// // Request LC by Buyer
-function requestLC(req, res) {
+// // Create Car By Manufacturer
+function createCar(req, res) {
 
 //Init fabric client
 var fabric_client = new Fabric_Client();
 
 // setup the fabric network
-var channel = fabric_client.newChannel('tfbcchannel');
+var channel = fabric_client.newChannel('vlmchannel');
 var order = fabric_client.newOrderer('grpc://localhost:7050')
 channel.addOrderer(order);
 
@@ -61,26 +61,26 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 	fabric_client.setCryptoSuite(crypto_suite);
 
 	// get the enrolled user from persistence, this user will sign all requests
-	return fabric_client.getUserContext('buyerUser', true);
+	return fabric_client.getUserContext('manfUser', true);
 }).then((user_from_store) => {
 	if (user_from_store && user_from_store.isEnrolled()) {
-		console.log('Successfully loaded buyerUser from persistence');
+		console.log('Successfully loaded manfUser from persistence');
 		member_user = user_from_store;
 	} else {
-		throw new Error('Failed to get buyerUser.... run registerUser.js');
+		throw new Error('Failed to get manfUser.... run registerUser.js');
 	}
 
 	// get a transaction id object based on the current user assigned to fabric client
 	tx_id = fabric_client.newTransactionID();
 	console.log("Assigning transaction_id: ", tx_id._transaction_id);
 
-	// createCar chaincode function - requires 5 args, ex: args: ['CAR12', 'Honda', 'Accord', 'Black', 'Tom'],
+	// createCar chaincode function - requires 5 args, ex: args: ['ChassisNo', 'Owner', 'RegistrationNo', 'RegisExpDate', ''],
 	// changeCarOwner chaincode function - requires 2 args , ex: args: ['CAR10', 'Dave'],
 	// must send the proposal to endorsing peers
-	var request = {chaincodeId: 'tfbccc',
-		fcn: 'requestLC',
-		args: [req.body.lcId, req.body.expiryDate, req.body.buyer, req.body.bank, req.body.seller, req.body.amount],
-		chainId: 'tfbcchannel',
+	var request = {chaincodeId: 'vlmcc',
+		fcn: 'createCar',
+		args: [req.body.chasisNo, req.body.owner, req.body.registrationNo, req.body.registrationExpDae],
+		chainId: 'vlm',
 		txId: tx_id};
 
 	// send the transaction proposal to the peers
@@ -180,14 +180,14 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 });
 }
 
-// Issue LC by Bank
-function issueLC(req, res) {
+// Transfer Car To Dealer
+function transferCar(req, res) {
 
 		//Init fabric client
 		var fabric_client = new Fabric_Client();
 	
 		// setup the fabric network
-		var channel = fabric_client.newChannel('tfbcchannel');
+		var channel = fabric_client.newChannel('vlmchannel');
 		var order = fabric_client.newOrderer('grpc://localhost:7050')
 		channel.addOrderer(order);
 		
@@ -210,13 +210,13 @@ function issueLC(req, res) {
 		fabric_client.setCryptoSuite(crypto_suite);
 	
 		// get the enrolled user from persistence, this user will sign all requests
-		return fabric_client.getUserContext('bankUser', true);
+		return fabric_client.getUserContext('manufacturerUser', true);
 	}).then((user_from_store) => {
 		if (user_from_store && user_from_store.isEnrolled()) {
-			console.log('Successfully loaded bankUser from persistence');
+			console.log('Successfully loaded manufacturerUser from persistence');
 			member_user = user_from_store;
 		} else {
-			throw new Error('Failed to get bankUser.... run registerUser.js');
+			throw new Error('Failed to get manufacturerUser.... run registerUser.js');
 		}
 	
 		// get a transaction id object based on the current user assigned to fabric client
@@ -224,12 +224,12 @@ function issueLC(req, res) {
 		console.log("Assigning transaction_id: ", tx_id._transaction_id);
 	
 		// createCar chaincode function - requires 5 args, ex: args: ['CAR12', 'Honda', 'Accord', 'Black', 'Tom'],
-		// changeCarOwner chaincode function - requires 2 args , ex: args: ['CAR10', 'Dave'],
+		// transferCar chaincode function - requires 2 args , ex: args: ['ChasisNo', 'Owner'],
 		// must send the proposal to endorsing peers
-		var request = {chaincodeId: 'tfbccc',
-	fcn: 'issueLC',
-	args: [req.body.lcId],
-	chainId: 'tfbcchannel',
+		var request = {chaincodeId: 'vlmcc',
+	fcn: 'transferCar',
+	args: [req.body.chassisNo,req.body.owner],
+	chainId: 'vlmchannel',
 	txId: tx_id};
 	
 		// send the transaction proposal to the peers
@@ -329,14 +329,14 @@ function issueLC(req, res) {
 	});
 	}
 
-// Accept LC by Seller
-function acceptLC(req, res) {
+// Sell and RegisterCar
+function SellnRegisterCar(req, res) {
 
 	//Init fabric client
 	var fabric_client = new Fabric_Client();
 	
 	// setup the fabric network
-	var channel = fabric_client.newChannel('tfbcchannel');
+	var channel = fabric_client.newChannel('vlmchannel');
 	var order = fabric_client.newOrderer('grpc://localhost:7050')
 	channel.addOrderer(order);
 	
@@ -359,26 +359,26 @@ function acceptLC(req, res) {
 		fabric_client.setCryptoSuite(crypto_suite);
 	
 		// get the enrolled user from persistence, this user will sign all requests
-		return fabric_client.getUserContext('sellerUser', true);
+		return fabric_client.getUserContext('dealerUser', true);
 	}).then((user_from_store) => {
 		if (user_from_store && user_from_store.isEnrolled()) {
-			console.log('Successfully loaded sellerUser from persistence');
+			console.log('Successfully loaded dealerUser from persistence');
 			member_user = user_from_store;
 		} else {
-			throw new Error('Failed to get sellerUser.... run registerUser.js');
+			throw new Error('Failed to get dealerUser.... run registerUser.js');
 		}
 	
 		// get a transaction id object based on the current user assigned to fabric client
 		tx_id = fabric_client.newTransactionID();
 		console.log("Assigning transaction_id: ", tx_id._transaction_id);
 	
-		// createCar chaincode function - requires 5 args, ex: args: ['CAR12', 'Honda', 'Accord', 'Black', 'Tom'],
-		// changeCarOwner chaincode function - requires 2 args , ex: args: ['CAR10', 'Dave'],
+		// sellnRegister chaincode function - requires 4 args, ex: args: ['ChassisNo','Owner' 'RegistrationNo', 'RegistrationExpDae'],
+		
 		// must send the proposal to endorsing peers
-		var request = {chaincodeId: 'tfbccc',
-	fcn: 'acceptLC',
-	args: [req.body.lcId],
-	chainId: 'tfbcchannel',
+		var request = {chaincodeId: 'vlmcc',
+	fcn: 'sellnRegisterCar',
+	args: [req.body.chasisNo,req.body.owner,req.body.registrationNo,req.body.registrationExpDae],
+	chainId: 'vlmchannel',
 	txId: tx_id};
 	
 		// send the transaction proposal to the peers
@@ -480,12 +480,12 @@ function acceptLC(req, res) {
 }
 
 // Get current state of LC using Bank user
-function getLC(req, res){
+function scrapCar(req, res){
 	//Init fabric client
 	var fabric_client = new Fabric_Client();
 	
 	// setup the fabric network
-	var channel = fabric_client.newChannel('tfbcchannel');
+	var channel = fabric_client.newChannel('vlmchannel');
 	var order = fabric_client.newOrderer('grpc://localhost:7050')
 	channel.addOrderer(order);
 	
@@ -507,56 +507,56 @@ function getLC(req, res){
 		fabric_client.setCryptoSuite(crypto_suite);
 	
 		// get the enrolled user from persistence, this user will sign all requests
-		return fabric_client.getUserContext('bankUser', true);
+		return fabric_client.getUserContext('scrUser', true);
 	}).then((user_from_store) => {
 		if (user_from_store && user_from_store.isEnrolled()) {
-			console.log('Successfully loaded bankUser from persistence');
+			console.log('Successfully loaded scrUser from persistence');
 			member_user = user_from_store;
 		} else {
-			throw new Error('Failed to get bankUser.... run registerUser.js');
+			throw new Error('Failed to get scrUser.... run registerUser.js');
 		}
 	
 		// queryCar chaincode function - requires 1 argument, ex: args: ['CAR4'],
-		// queryAllCars chaincode function - requires no arguments , ex: args: [''],
-		var request = {chaincodeId: 'tfbccc',
-		fcn: 'getLC',
-		args: [req.body.lcId],
-		chainId: 'tfbcchannel',
+		// ScarpCar functionality requires one argument ['chasisNo'],
+		var request = {chaincodeId: 'vlmcc',
+		fcn: 'scrapCar',
+		args: [req.body.chasisNo],
+		chainId: 'vlmchannel',
 		};
 	
 		// send the query proposal to the peer
 		return channel.queryByChaincode(request);
 	}).then((query_responses) => {
-		console.log("Query has completed, checking results");
+		console.log("Car  has be added to scrap, checking results");
 		// query_responses could have more than one  results if there multiple peers were used as targets
 		if (query_responses && query_responses.length == 1) {
 			if (query_responses[0] instanceof Error) {
 				console.error("error from query = ", query_responses[0]);
-				res.send({code:"500", data: "Issue with getting LC details"});
+				res.send({code:"500", data: "Issue with getting scap details"});
 			} else {
 				
 				console.log("Response is ", query_responses[0].toString());
 				res.send({code:"200", data: JSON.parse(query_responses[0].toString())});
 			}
 		} else {
-			console.log("No payloads were returned from query");
-			res.send({code:"500", data: "No LC found"});
+			console.log("Car was not scrapper");
+			res.send({code:"500", data: "Car not scrapper"});
 		}
 	}).catch((err) => {
 		console.error('Failed to query successfully :: ' + err);
-		res.send({code:"500", data: "Issue with getting LC details"});
+		res.send({code:"500", data: "Issue with scapper"});
 	});
 	
 }
 
 // Get current state of LC using Bank user
-function getLCHistory(req, res){
+function getCar(req, res){
 
 	//Init fabric client
 	var fabric_client = new Fabric_Client();
 	
 	// setup the fabric network
-	var channel = fabric_client.newChannel('tfbcchannel');
+	var channel = fabric_client.newChannel('vlmchannel');
 	var order = fabric_client.newOrderer('grpc://localhost:7050')
 	channel.addOrderer(order);
 	
@@ -578,21 +578,21 @@ function getLCHistory(req, res){
 		fabric_client.setCryptoSuite(crypto_suite);
 	
 		// get the enrolled user from persistence, this user will sign all requests
-		return fabric_client.getUserContext('bankUser', true);
+		return fabric_client.getUserContext('dealerUser', true);
 	}).then((user_from_store) => {
 		if (user_from_store && user_from_store.isEnrolled()) {
-			console.log('Successfully loaded bankUser from persistence');
+			console.log('Successfully loaded dealerUser from persistence');
 			member_user = user_from_store;
 		} else {
-			throw new Error('Failed to get bankUser.... run registerUser.js');
+			throw new Error('Failed to get dealerUser.... run registerUser.js');
 		}
 	
 		// queryCar chaincode function - requires 1 argument, ex: args: ['CAR4'],
 		// queryAllCars chaincode function - requires no arguments , ex: args: [''],
-		var request = {chaincodeId: 'tfbccc',
-		fcn: 'getLCHistory',
-		args: [req.body.lcId],
-		chainId: 'tfbcchannel',
+		var request = {chaincodeId: 'vlmcc',
+		fcn: 'getCarHistory',
+		args: [req.body.chasisNo],
+		chainId: 'vlmchannel',
 		};
 	
 		// send the query proposal to the peer
@@ -603,7 +603,7 @@ function getLCHistory(req, res){
 		if (query_responses && query_responses.length == 1) {
 			if (query_responses[0] instanceof Error) {
 				console.error("error from query = ", query_responses[0]);
-				res.send({code:"500", message: "Issue with getting LC details"});
+				res.send({code:"500", message: "isuue with getting car history"});
 			} else {
 				
 				console.log("Response is ", query_responses[0].toString());
@@ -611,21 +611,22 @@ function getLCHistory(req, res){
 			}
 		} else {
 			console.log("No payloads were returned from query");
-			res.send({code:"500", message: "No LC found"});
+			res.send({code:"500", message: "No car history found"});
 		}
 	}).catch((err) => {
 		console.error('Failed to query successfully :: ' + err);
-		res.send({code:"500", message: "Issue with getting LC details"});
+		res.send({code:"500", message: "Issue with getting car details"});
 	});
 	
 }
 
-let tfbc = {
-	requestLC: requestLC,
-	issueLC: issueLC,
-	acceptLC: acceptLC,
-	getLC: getLC,
-	getLCHistory: getLCHistory
+let vlm = {
+	createCar: createCar,
+	transferCar: transferCar,
+	sellnRegisterCar: SellnRegisterCar,
+	scrapCar: scrapCar,
+	getCar: getCar
 }
 
-module.exports = tfbc;
+module.exports = vlm;
+
