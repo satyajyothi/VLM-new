@@ -30,10 +30,10 @@ var store_path = path.join(__dirname, "hfc-key-store");
 console.log("Store path:" + store_path);
 var tx_id = null;
 
-getCar();
+getCarHistory();
 
 // Get current state of LC using Bank user
-function getCar() {
+function getCarHistory() {
   //Init fabric client
   var fabric_client = new Fabric_Client();
 
@@ -72,8 +72,8 @@ function getCar() {
       // queryAllCars chaincode function - requires no arguments , ex: args: [''],
       var request = {
         chaincodeId: "vlmcc",
-        fcn: "getCar",
-        args: ["1002"],
+        fcn: "getCarHistory",
+        args: ["1001"],
         chainId: "vlm"
       };
 

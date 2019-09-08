@@ -30,10 +30,10 @@ var store_path = path.join(__dirname, "hfc-key-store");
 console.log("Store path:" + store_path);
 var tx_id = null;
 
-createCar();
+sellNRegisterCar();
 
 // // Create Car By Manufacturer
-function createCar() {
+function sellNRegisterCar() {
   //Init fabric client
   var fabric_client = new Fabric_Client();
 
@@ -77,8 +77,8 @@ function createCar() {
       // must send the proposal to endorsing peers
       var request = {
         chaincodeId: "vlmcc",
-        fcn: "createCar",
-        args: ["1002"],
+        fcn: "sellnRegisterCar",
+        args: ["1001", "Vaibhav","TS07-1","31DEC2025"],
         chainId: "vlm",
         txId: tx_id
       };
@@ -127,7 +127,7 @@ function createCar() {
         // get an eventhub once the fabric client has a user assigned. The user
         // is required bacause the event registration must be signed
         let event_hub = fabric_client.newEventHub();
-        event_hub.setPeerAddr("grpc://localhost:8053");
+        event_hub.setPeerAddr("grpc://localhost:8051");
 
         // using resolve the promise so that result status may be processed
         // under the then clause rather than having the catch clause process
@@ -214,4 +214,3 @@ function createCar() {
       // res.send({ code: "500", message: "LC request failed." });
     });
 }
-
