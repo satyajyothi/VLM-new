@@ -15,7 +15,7 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.manf.vlm.com
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.manf.vlm.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/8784f299eb5e7c9ea9fe8709a209b51a70ba28fd7d97d0328e8c6f9abcd9905a_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/36c6e1cd45e6bf94f3c6f52e9cfa0b5f626dd3d3d86a19233fd67f27a0233ad9_sk
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -31,12 +31,12 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.rta.vlm.com
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.rta.vlm.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/5199ebf80425ab6dc8fdbe0dcb36d895dba4ed9454435ae23a79b84b1a13e1d5_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/6cdde4c5bc7492abe73ff99f4b9303d6486123073aeaa88c9da41deb1f69536e_sk
     ports:
       - "8054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/ca.rta.vlm.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/rta.vlm.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.rta.vlm.com
     networks:
       - basic
@@ -47,7 +47,7 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.dlr.vlm.com
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.dlr.vlm.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ff9d7dd647192baf6b1cc6c542143fe3f358ac64cb1f416783998d8c99436757_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/407453a3173f402b9f375a51e1071719e5f800e9f279981bfbb1e47339a01f43_sk
     ports:
       - "9054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -64,7 +64,7 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.scr.vlm.com
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.scr.vlm.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/937ef72e6ca87808ddaa34ce6fc9d0717dd9cb7c80fbc5d2017635aec86d3a5a_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/9baef2ea5cec33547d495f3346182bf1d8643aada108dadfd1dfd84ed5eea4f1_sk
     ports:
       - "10054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -81,7 +81,7 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.bank.vlm.com
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.bank.vlm.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/5d71babf02573bae4dd25be1d0e1de44d3a2f60a71a605381f559dae83c0969b_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/427172f7abc94a5adbeb5f4fccd9b2d7e54eba9e69229ad43a32df93dab8187a_sk
     ports:
       - "20054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
@@ -147,8 +147,8 @@ services:
       - 7053:7053
     volumes:
         - /var/run/:/host/var/run/
-        - ./crypto-config/peerOrganizations/bank.vlm.com/peers/peer0.manf.vlm.com/msp:/etc/hyperledger/msp/peer
-        - ./crypto-config/peerOrganizations/bank.vlm.com/users:/etc/hyperledger/msp/users
+        - ./crypto-config/peerOrganizations/manf.vlm.com/peers/peer0.manf.vlm.com/msp:/etc/hyperledger/msp/peer
+        - ./crypto-config/peerOrganizations/manf.vlm.com/users:/etc/hyperledger/msp/users
         - ./config:/etc/hyperledger/configtx
     depends_on:
       - orderer.vlm.com

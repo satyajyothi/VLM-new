@@ -3,7 +3,7 @@ echo "Setting up the network.."
 echo "Creating channel genesis block.."
 
 # Create the channel
-docker exec -e "CORE_PEER_LOCALMSPID=manfMSP" -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manf.vlm.com/users/Admin@manf.vlm.com/msp" -e "CORE_PEER_ADDRESS=peer0.manf.vlm.com:7051" cli peer channel create -o orderer.manf.com:7050 -c vlmchannel -f /etc/hyperledger/configtx/vlmchannel.tx
+docker exec -e "CORE_PEER_LOCALMSPID=manfMSP" -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manf.vlm.com/users/Admin@manf.vlm.com/msp" -e "CORE_PEER_ADDRESS=peer0.manf.vlm.com:7051" cli peer channel create -o orderer.vlm.com:7050 -c vlmchannel -f /etc/hyperledger/configtx/vlmchannel.tx
 
 
 sleep 5
